@@ -1,15 +1,18 @@
 const input = document.querySelector('input')
 const resultsPanel = document.querySelector('.resultsPanel')
- 
+
 
 document.querySelector('input').addEventListener('keyup', (e)=>{
-    console.log(e)
     console.log(input.value)
+    const query = input.value
+
+
+    
+
     setTimeout(async () => {
-        await fetch(`/search/${input.value}`)
+        await fetch(`/search/${query}`)
         .then(results=>results.json())
         .then((results)=>{
-            console.log(results)
             resultsPanel.innerHTML=''
             if (results) {
                 results.forEach((song)=>{
@@ -19,6 +22,6 @@ document.querySelector('input').addEventListener('keyup', (e)=>{
                 })
             }
         })
-    }, 0); //
-
+    }, 0);
 })
+
