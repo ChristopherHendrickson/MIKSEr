@@ -25,4 +25,5 @@ FRONT END
 handles creation of audio html objects
 implements volume, warping for game type (speedin up/slowing down/snippets)
 on creation of play buttons need to add listener to play correct audio object
-iterate over songs in playlist, create html element, create audio object, assign audio object to html objects event listener > this best done with a class constructor like I did the nodes in tic-tac-toe??
+iterate over songs in playlist, create html element, create audio object, assign audio 
+object to html objects event listener > this best done with a class constructor like I did the nodes in tic-tac-toe??

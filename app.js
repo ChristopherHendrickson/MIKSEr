@@ -9,7 +9,8 @@ const flash = require('express-flash')
 const Playlist = require('./models/playlists')
 const User = require('./models/users')
 const mongoose = require('mongoose')
-
+// const playlistsRouter = require('./controllers/playlists')
+const authRouter = require('./controllers/auth')
 
 
 
@@ -47,6 +48,9 @@ passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
 //app.use routers here
+
+app.use(authRouter)
+// app.use(playlistsRouter)
 
 
 
@@ -110,7 +114,89 @@ const search = async (token,query,limit) => {
 
 
 
+
+
+
+//INDEX
+app.get('/playlists', async (req,res)=>{
+    const playlists = await Playlist.find()
+
+    res.render('index.ejs', {
+        playlists:playlists,
+        tabTitle:'update title',
+        currentUser:req.user
+    })
+})
+
+//NEW
+app.get('/playlists/new', (req,res)=>{
+    res.render('new.ejs', {
+
+    })
+})
+
+//CREATE
+app.post('/playlists', async (req,res)=>{
+    const user_id=req.user._id.valueOf()
+    const username=req.user.username
+    const tracks = JSON.parse(req.body.tracks)
+    const trackList = []
+    for (const [key, value] of Object.entries(tracks)) {
+        trackList.push(value)
+      }
+      
+    const newPlaylist = {
+        name:req.body.name,
+        creator:username,
+        creator_id:user_id,
+        tracks:trackList,
+        length:trackList.length,
+        warp:req.body.warp
+    }
+    await Playlist.create(newPlaylist)
+    res.redirect('/playlists')
+})
+
+//EDIT SHOW
+app.get('/playlists/:id/edit', (req,res)=>{
+
+})
+
+//EDIT
+app.put('/playlists/:id', (req,res)=>{
+
+})
+
+
+//SHOW 
+app.get('/playlists/:id', async (req,res)=>{
+    const playlist = await Playlist.findOne({_id:req.params.id})
+    res.render('show.ejs', {
+        playlist:playlist,
+        tabTitle:`MIKSEr | ${playlist.name}`,
+        currentUser:req.user
+        
+    })
+})
+
+
+
+
+//BLANK SEARCH
+app.get('/search', (req,res)=>{
+    setTimeout(() => {
+        res.send([])
+    }, 10);
+})
+
+
+app.get('/',(req,res)=>{
+    res.render('home.ejs')
+})
+
+//API SEARCH
 app.get('/search/:query', async (req,res)=>{
+
     getToken()
         .then((token)=>{
             const searchResults = search(token,req.params.query,limit)
@@ -118,7 +204,6 @@ app.get('/search/:query', async (req,res)=>{
         })
         .then((data)=>{
             const results = []
-            console.log(data.tracks.items[0].album.images)
             data.tracks.items.forEach((track)=>{
                 if (track.preview_url) {
                     const trackName = track.name
@@ -129,7 +214,8 @@ app.get('/search/:query', async (req,res)=>{
                         id:track.id,
                         preview:track.preview_url,
                         popularity:track.popularity,
-                        image:track.album.images[0].url
+                        image:track.album.images[0].url,
+                        display:`${trackName} - ${trackArtist}`
                     })
                 }
             })
@@ -137,17 +223,12 @@ app.get('/search/:query', async (req,res)=>{
         })
 })      
 
-app.get('/search', (req,res)=>{
-    setTimeout(() => {
-        res.send([])
-    }, 1000);
+//Database search
+app.get('/database/:id', async (req,res)=>{
+    const playlist = await Playlist.findOne({_id:req.params.id})
+    
+    res.send(playlist)
 })
-
-app.get('/',(req,res)=>{
-    res.render('new.ejs')
-})
-
-
 
 
 
@@ -173,7 +254,7 @@ app.listen(PORT,()=>{
 })
   
 
-// //DB CONNECT
-// mongoose.connect(dbURL, ()=>{
-//     console.log('connected to database')
-// })
+//DB CONNECT
+mongoose.connect(dbURL, ()=>{
+    console.log('connected to database')
+})

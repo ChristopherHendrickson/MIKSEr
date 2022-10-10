@@ -1,0 +1,66 @@
+<%-include('partials/head.ejs')%>
+
+
+<div class="title">
+    <h1>MIKSEr</h1>
+</div>
+
+<div class="playlistInfo">
+    <span id="playlistName"><%=playlist.name%></span>
+    <span id="playlistCreator">By <%=playlist.creator%></span>
+</div>
+
+<article class="trackPanel">
+    <%playlist.tracks.forEach((track,i)=>{ %>
+        <section class="trackDisplay">
+            <div class="guessPanel">
+                <% for (let j = 1 ; j<6 ; j++) { %>
+                <span class="guessDisplay" id="<%=`guess${i}${j}`%>"></span>
+                <% } %>
+            </div>
+
+            <div class="playNext">
+                <span class="playButton paused" id="<%=track.id%>">
+                    
+                </span>
+                <span class="nextButton hide">
+                    NEXT >>
+                </span>
+                
+            </div>
+
+        </section>
+    <% }) %>
+</article>
+
+<div class="searchPanel">
+
+    <div class="skipButton">
+        <span>Skip</span>
+    </div>
+    
+    <div>
+        <input type="text" class="searchBar">
+    </div>
+
+    <div class="guessButton" data-submittable="false">
+        <span>Guess</span>
+    </div>
+</div>
+
+<div class="resultsPanel"></div>
+
+<article class="iframePanel">
+    <%playlist.tracks.forEach((track)=>{ %>
+        <section class="iframeSec dropped" id="<%=`iframe${track.id}`%>">
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/<%=track.id%>?utm_source=generator" width="90%" height="142" frameBorder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </section>
+    <% }) %>
+</article>
+
+
+<div class="databaseIdDelivery"><%=playlist._id%></div>
+
+
+<script src="/js/show.js"></script>
+<%-include('partials/foot.ejs')%>

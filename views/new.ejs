@@ -1,17 +1,29 @@
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-<meta charset='UTF-8'>
-<meta http-equiv='X-UA-Compatible' content='IE=edge'>
-<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-<script defer src='js/search.js'></script>
-<title>Document</title>
-</head>
-<body>
+<%-include('partials/head.ejs')%>
 <h1></h1>
-<input id="text">
+<p>Selected Songs</p>
+<div class="selectedPanel"></div>
+<input type="text" class="searchBar">
 <div class="resultsPanel"></div>
+<br>
+<form method="post" action="/playlists">
+    <label for="name">Playlist Name</label>
+    <input name="name" type="text" id="name" required>
+    <br>
+
+    <label for="snippet">Snippet</label>
+    <input type="radio" id="snippet" name="warp" value="Snippet" checked="checked">
+
+    <label for="fast">Fast</label>
+    <input type="radio" id="fast" name="warp" value="Fast">
+    
+    <label for="slow">Slow</label>
+    <input type="radio" id="slow" name="warp" value="Slow">
+    
+    <br>
+    <input name="tracks" type="text" id="tracksPost" value="{}" hidden>
+    <input type="submit" value="Create Playlist">
+</form>
 
 <!-- <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/003vvx7Niy0yvhvHt4a68B?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> -->
-</body>
-</html>
+<script src='/js/new.js'></script>
+<%-include('partials/foot.ejs')%>

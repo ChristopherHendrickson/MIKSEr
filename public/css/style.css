@@ -1,0 +1,197 @@
+body {
+    margin:0;
+    background-color: rgb(20, 20, 20);
+    color:gainsboro;
+    font-family: 'Roboto', sans-serif;
+    overflow-x: hidden;
+
+}
+
+h1 {
+    margin:0;
+    padding:0;
+}
+
+nav {
+    background-color: black;
+}
+
+.title {
+    text-align: center;
+    font-size: 48px;;
+}
+
+.databaseIdDelivery {
+    display:none;
+}
+.playlistInfo {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+
+}
+#playlistName {
+    font-size: 36px;
+    line-height: 1.5em;
+}
+
+.trackPanel {
+    /* overflow-x: hidden; */
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    left:0;
+    transition: translate 0.6s ease-out;
+    translate:0
+}
+
+.trackDisplay {
+    min-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.guessPanel {
+    width:600px;
+    display:flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.guessDisplay {
+    border: 1px solid gainsboro;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin:6px 0px;
+    padding: 4px 20px;
+    font-size: 20px;
+    min-height:1.2em;
+    line-height:1.2em
+}
+
+.guessDisplay.incorrect {
+    background-color: rgba(83, 26, 26, 0.4) 
+}
+
+.guessDisplay.correct {
+    background-color: rgb(26, 94, 26,0.4) 
+}
+
+
+.playNext {
+    display:flex;
+    flex-direction: row;
+    width:550px;
+    justify-content: space-evenly;
+    align-items: center;
+    height:64px;
+}
+
+.playButton {
+    height:40px;
+    width:40px;
+    border: 2px solid gainsboro;
+    border-radius: 50%;
+    /* background-color: black; */
+    text-align: center;
+    line-height: 40px;
+    background-image: url('../image/pause.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:30px;
+}
+
+.playButton.paused {
+    background-color: transparent;
+    background-image: url('../image/play.png');
+}
+
+.nextButton,.guessButton,.skipButton {
+    height: 30px;
+    border: 2px solid gainsboro;
+    width: 80px;
+    background-color: rgb(82, 82, 82);
+    text-align: center;
+    line-height: 30px;
+}
+
+.hide {
+    display:none;
+}
+.hide > * {
+    display:none;
+}
+
+.nextButton.submittable {
+    background-color: black;
+    
+}
+
+.searchPanel {
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 0px auto;
+    width: 800px;
+    margin-top:30px
+}
+
+.searchBar {
+    box-sizing: border-box;
+    border-radius: 0;
+    border: 2px solid gainsboro;
+    height:30px;
+    line-height: 24px;
+    font-size: 18px;
+    width: 600px;
+    background-color:rgb(20, 20, 20);
+    color:gainsboro;
+    user-select: none;
+}
+
+
+.searchBar:focus { 
+    outline:none;
+}
+
+.resultsPanel {
+    box-sizing: border-box;
+    width: 600px;
+    border: 1px solid gainsboro;
+    margin: 0 auto;
+
+}
+
+.resultsPanel > section{    
+    border:1px solid gainsboro;
+    font-size: 18px;
+    
+}
+
+.iframePanel {
+    position:absolute;
+    display:flex;
+    flex-direction: row;
+    overflow-x: hidden;
+    bottom:0px;
+    transition: 100s;
+}
+
+.iframeSec {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width:100vw;
+    overflow-x: hidden;
+}
+
+.iframeSec.dropped {
+    position:absolute;
+    bottom:-500px;
+}
+
