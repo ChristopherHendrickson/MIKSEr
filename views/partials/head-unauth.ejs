@@ -20,24 +20,10 @@
         <div class="dropdown">
             <button class="accbtn"></button>
             <div id="accdrop" class="dropdown-content">
-
-            <%if (currentUser) { %>
-              <a href="/playlists">Browse Playlist</a>
-              <a href="/playlists/new">New Playlist</a>
-              <a href="/playlists/user/<%=currentUser.username%>">My Playlists</a>
-              <a href="#">About</a>
-              <form method="post" action="/logout">
-                <input type="submit" value="Logout" id="logoutButton"/>
-            </form>
-            </div>
-            <% } else { %>
                 <a href="/playlists">Browse Playlist</a>
                 <a href="#">About</a>
                 <a href="/login">Login</a>
                 <a href="/register">Register</a>
-            <% } %>
-
-
           </div>
     </nav>
 

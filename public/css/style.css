@@ -3,8 +3,8 @@ body {
     background-color: rgb(20, 20, 20);
     color:gainsboro;
     font-family: 'Roboto', sans-serif;
-    overflow-x: hidden;
-
+    /* overflow-x: hidden; */
+    cursor: default;
 }
 
 h1 {
@@ -13,15 +13,28 @@ h1 {
 }
 
 nav {
-    background-color: black;
+    border-bottom:2px solid gainsboro;
     display:flex;
     flex-direction: row;
+    justify-content: flex-end;
+    min-height:68px;
+}
+
+nav .header {
+    width:100vw;
+    position:absolute;
+    font-size: 60px;
+    text-align: center;
 }
 
 .title {
     text-align: center;
-    font-size: 48px;;
+    font-size: 60px;
+    line-height: 2em;
+
 }
+
+
 
 .databaseIdDelivery {
     display:none;
@@ -98,13 +111,13 @@ nav {
     width:40px;
     border: 2px solid gainsboro;
     border-radius: 50%;
-    /* background-color: black; */
     text-align: center;
     line-height: 40px;
     background-image: url('../image/pause.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size:30px;
+    cursor: pointer;
 }
 
 .playButton.paused {
@@ -112,13 +125,14 @@ nav {
     background-image: url('../image/play.png');
 }
 
-.nextButton,.guessButton,.skipButton {
-    height: 30px;
+.nextButton,.guessButton,.skipButton,.summaryButton,.exitButton {
+    min-height: 30px;
     border: 2px solid gainsboro;
-    width: 80px;
+    min-width: 80px;
     background-color: rgb(82, 82, 82);
     text-align: center;
     line-height: 30px;
+    cursor: pointer;
 }
 
 .hide {
@@ -197,3 +211,103 @@ nav {
     bottom:-500px;
 }
 
+.summaryDisplay img {
+    height:80px;
+    width:80px;
+}
+
+.summary {
+    width:980px;
+    display:flex;
+    flex-direction: column;
+    height:304px;
+    overflow-y: auto;
+    border: 2px solid gainsboro;
+    border-radius: 8px;
+    margin:10px auto;
+
+
+}
+
+.summaryDisplay {
+    border: 1px solid gainsboro;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin:6px 40px;
+    padding: 4px 10px 4px 4px;
+    font-size: 28px;
+    line-height:100%;
+}
+
+.score { 
+    font-size: 15px;
+}
+
+.summaryTitle {
+    max-width: 650px
+}
+
+
+
+
+
+
+
+.accbtn {
+    margin:0px 20px;
+    min-width:40px;
+    min-height:100%;
+    background-color: rgb(20, 20, 20);
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    background-image: url('../image/options.png');
+    background-position: center;
+    background-size: 60%;
+    background-repeat: no-repeat;
+  }
+  
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    right:0;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    overflow: auto;
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  #logoutButton {
+    font-family: 'Roboto', sans-serif;
+    border:none;
+    color: black;
+    font-size: 16px;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    width:100%;
+    text-align: left;
+  }
+
+  .dropdown a:hover {background-color: #828282;}
+  #logoutButton:hover {background-color: #828282;}
+
+  .show {display: block;}

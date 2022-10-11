@@ -2,7 +2,7 @@
 <h1></h1>   
 <p>Selected Songs</p>
 <div class="selectedPanel"></div>
-<input type="text" class="searchBar">
+<input type="text" class="searchBar" placeholder="Search for Songs or Artists">
 <div class="resultsPanel"></div>
 <br>
 
@@ -22,7 +22,8 @@
     
     <br>
     <input name="tracks" type="text" id="tracksPost" value="<%=selectedTracks%>" hidden required>
-    <input type="submit" value="Create Playlist" id="submitButton">
+    <input type="submit" value="Update Playlist" id="submitButton">
+    
 </form>
 
 <div class="databaseIdDelivery"><%=playlist._id%></div>

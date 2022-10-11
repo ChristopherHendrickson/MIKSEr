@@ -53,5 +53,13 @@
 
 </article>
 
+<%if (viewingOwn) { %>
+    <a href="/playlists/new">
+        <div class="createDiv">
+            Create A New Playlist
+        </div>
+    </a>
+<% } %>
+
 
 <%-include('partials/foot.ejs')%>

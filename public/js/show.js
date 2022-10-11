@@ -2,13 +2,16 @@ const controller = ()=>{
     const searchBar = document.querySelector('.searchBar')
     const resultsPanel = document.querySelector('.resultsPanel')
     const guessDisplays = document.querySelectorAll('.guessDisplay')
+    const summaryDisplays = document.querySelectorAll('.summaryDisplay')
     const guessButton = document.querySelector('.guessButton')
     const skipButton = document.querySelector('.skipButton')
+    const exitButton = document.querySelector('.exitButton')
     const trackPanel = document.querySelector('.trackPanel')
     const iframePanel = document.querySelector('.iframePanel')
     const iframeSecs = document.querySelectorAll('.iframeSec')
     const playButtons = document.querySelectorAll('.playButton')
     const nextButtons = document.querySelectorAll('.nextButton')
+    const summaryButton = document.querySelector('.summaryButton')
     const databaseId = document.querySelector('.databaseIdDelivery').innerHTML
     const searchPanel = document.querySelector('.searchPanel')
     let currentTrackIndex = 0
@@ -18,7 +21,7 @@ const controller = ()=>{
     const warpFastRate = 2.8
     const warpSlowRate = 0.3
     const volume = 0.8
-
+    const scores=[]
     
     class Aud {
         static instances = []
@@ -108,7 +111,6 @@ const controller = ()=>{
             .then((playlist)=>{
                 playlist.tracks.forEach((track)=>{
                     const trackPlayButton = document.getElementById(track.id)
-                    console.log(track.preview)
                     listOfAudioPreviews.push(new Aud(track.preview,playlist.warp,track.id))
                     trackPlayButton.addEventListener('click',audControl)
 
@@ -117,7 +119,7 @@ const controller = ()=>{
     }
 
     
-
+    console.log(databaseId)
     getPlaylist(databaseId)
 
 
@@ -125,28 +127,31 @@ const controller = ()=>{
         const query = searchBar.value
         guessButton.dataset.submittable="false"
         guessButton.classList.toggle('submittable',false)
-        setTimeout(async () => {
-            await fetch(`/search/${query}`)
-            .then(results=>results.json())
-            .then((results)=>{
-    
-                resultsPanel.innerHTML=''
-                if (results) {
-                    results.forEach((song)=>{
-                        new Track(song)               
-                    })
-                }
-            })
-            .then(()=>{
-                //user can delete seach phrase before fetch completes. This deletes the results if they deleted they query
-                if (searchBar.value==='') {
+        if (query!='') {
+            setTimeout(async () => {
+                await fetch(`/search/${query}/0`)
+                .then(results=>results.json())
+                .then((results)=>{
                     resultsPanel.innerHTML=''
-                }   
-            })
-        }, 0);
+                    if (results) {
+                        results.forEach((song)=>{
+                            new Track(song)               
+                        })
+                    }
+                })
+                .then(()=>{
+                    //user can delete seach phrase before fetch completes. This deletes the results if they deleted they query
+                    if (searchBar.value==='') {
+                        resultsPanel.innerHTML=''
+                    }   
+                })
+            }, 0);
+        } else {
+            resultsPanel.innerHTML=''
+        }
     })
 
-    const roundEnd = () => {
+    const roundEnd = (succeeded=true) => {
         nextButtons.forEach((e)=> {
             e.classList.remove('hide')
         })
@@ -160,6 +165,8 @@ const controller = ()=>{
         Aud.instances.forEach((aud)=>{
             aud.audioObject.pause()
         })
+        summaryButton.classList.remove('hide')
+        scores.push(succeeded ? guessCount : 'Failed')
     }
     const roundStart = () => {
         iframeSecs.forEach((e)=>{
@@ -173,6 +180,8 @@ const controller = ()=>{
         })
         searchPanel.classList.remove('hide')
         iframeSecs[currentTrackIndex-1].remove()
+        summaryButton.classList.add('hide')
+
 
 
     }
@@ -185,14 +194,14 @@ const controller = ()=>{
         disp.classList.add('incorrect')
         guessCount+=1
         if (guessCount>=5) {
-            roundEnd()
+            roundEnd(false)
         }
     }
 
     skipButton.addEventListener('click',skip)
 
     guessButton.addEventListener('click',(e)=>{
-        //iterate over 
+
         if (guessButton.dataset.submittable==="true" && playlist) { //ensure playlist fetch has completed 
             const userGuess = searchBar.value
             const disp = guessDisplays[currentTrackIndex*5+guessCount]
@@ -213,12 +222,7 @@ const controller = ()=>{
                     roundEnd()
                 }
             }
-            // updateScores()
             
-            console.log(guessCount)
-            if (currentTrackIndex+1>=playlist.length) {
-                showSummary()
-            }
 
         } else {
             alert('Unknown Song')
@@ -237,8 +241,20 @@ const controller = ()=>{
         })
     })
     
+    summaryButton.addEventListener('click', (e)=>{
+        console.log('clicked summary')
+        trackPanel.style.translate=`${-(currentTrackIndex+1)*100}vw`
+        iframeSecs[currentTrackIndex].remove()
+        summaryDisplays.forEach((e,i)=>{
+            e.querySelector('.score').innerHTML = `Guesses: ${scores[i]}`
+        })
 
+    })
     
+    exitButton.addEventListener('click', ()=>{
+        console.log('clicked exit')
+        window.location.href = "/playlists"
+    })
 
 
 }

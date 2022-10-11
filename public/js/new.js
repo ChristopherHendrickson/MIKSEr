@@ -1,35 +1,36 @@
 const searchBar = document.querySelector('.searchBar')
 const resultsPanel = document.querySelector('.resultsPanel')
-// const selectedPanel = document.querySelector('.selectedPanel')
-// const tracksPost = document.getElementById('tracksPost')
 const submitButton = document.getElementById('submitButton')
 import Track from './Track.js';
-
+console.log(searchBar)
 
 searchBar.addEventListener('keyup', (e)=>{
-    console.log(searchBar.value)
     const query = searchBar.value
-
-    console.log('search bar activating')
-    setTimeout(async () => {
-        await fetch(`/search/${query}`)
-        .then(results=>results.json())
-        .then((results)=>{
-            console.log(results,'front end data')
-            resultsPanel.innerHTML=''
-            if (results) {
-                results.forEach((song)=>{
-                    new Track(song,false)        
-                })
-            }
-        })
-        .then(()=>{
-            //user can delete seach phrase before fetch completes. This deletes the results if they deleted they query
-            if (searchBar.value===''){
+    console.log(query)
+    if (query!='') {
+        console.log('passed the if')
+        setTimeout(async () => {
+            await fetch(`/search/${query}/0`)
+            .then(results=>results.json())
+            .then((results)=>{
                 resultsPanel.innerHTML=''
-            }   
-        })
-    }, 0); //timeout is added 
+                if (results) {
+                    results.forEach((song)=>{
+                        new Track(song,false)
+                    })
+                }
+            })
+            .then(()=>{
+                //user can delete seach phrase before fetch completes. This deletes the results if they deleted they query
+                if (searchBar.value==''){
+                    console.log('clearing search results')
+                    resultsPanel.innerHTML=''
+                }   
+            })
+        }, 0); 
+    } else {
+        resultsPanel.innerHTML=''
+    }
 })
 
 submitButton.addEventListener('click', (e)=>{
@@ -37,3 +38,4 @@ submitButton.addEventListener('click', (e)=>{
         alert('Playlists need atleast one song')
     }
 })
+

@@ -2,11 +2,11 @@
 
 
 <div class="title">
-    <h1>MIKSEr</h1>
+    <span><%=playlist.name%></span>
 </div>
 
 <div class="playlistInfo">
-    <span id="playlistName"><%=playlist.name%></span>
+    
     <span id="playlistCreator">By <%=playlist.creator%></span>
 </div>
 
@@ -23,14 +23,39 @@
                 <span class="playButton paused" id="<%=track.id%>">
                     
                 </span>
+                <% if (i===playlist.tracks.length-1) { %>
+                    <span class="summaryButton hide">
+                        Summary
+                    </span>
+                
+                <% } else { %>
+
                 <span class="nextButton hide">
-                    NEXT >>
+                    NEXT
                 </span>
+                <% } %>
                 
             </div>
 
         </section>
     <% }) %>
+    <section class="trackDisplay">
+        <div class="summary">
+            <%playlist.tracks.forEach((track,i)=>{ %>
+                <span class="summaryDisplay" id="<%=`summary${i}`%>">
+                    <img src="<%=track.image%>"/>
+                    <span class="summaryTitle"><%=track.display%></span>
+                    <span class="score" id="<%=`score${i}`%>"></span>
+                </span>
+            <% }) %>
+        </div>
+
+            <span class="exitButton">
+                Exit
+            </span>
+    </section>
+
+
 </article>
 
 <div class="searchPanel">
@@ -40,7 +65,7 @@
     </div>
     
     <div>
-        <input type="text" class="searchBar">
+        <input type="text" class="searchBar" placeholder="Search for Songs or Artists">
     </div>
 
     <div class="guessButton" data-submittable="false">

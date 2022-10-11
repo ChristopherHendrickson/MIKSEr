@@ -29,7 +29,6 @@ export default class Track {
                     console.log('selected track')
                 } else { //otherwsie click to remove it from the selected
                     trackSection.remove()
-                    console.log(Track.selectedTracks[this.display])
                     delete Track.selectedTracks[this.display]
                     console.log('removed track')
 
@@ -37,13 +36,10 @@ export default class Track {
 
                 if (Object.keys(Track.selectedTracks).length===0) {
                     tracksPost.setAttribute('value',null); //will not let a form submit wihtout atleast one track, as trackspost value is a required field
-                    console.log(tracksPost)
 
                 } else {
                     const n = JSON.stringify(Track.selectedTracks)
-                    console.log('updating tracksPost')
                     tracksPost.setAttribute('value',n)  //update the value of the form input to a JSON of the selected tracks object, that can be sent to the post controller
-                    console.log(tracksPost)
                 }
                 
             })
@@ -54,6 +50,7 @@ export default class Track {
         const selectedPanel = document.querySelector('.selectedPanel')
         selectedPanel.appendChild(trackSection) //add track to the selected display
         Track.selectedTracks[this.display] = this.track //add track to the selected tracks object
+        console.log(this.track)
         this.selected=true
     }
 }

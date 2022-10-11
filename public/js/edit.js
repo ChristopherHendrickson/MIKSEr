@@ -26,25 +26,29 @@ searchBar.addEventListener('keyup', (e)=>{
     const query = searchBar.value
 
     console.log('search bar activating')
-    setTimeout(async () => {
-        await fetch(`/search/${query}`)
-        .then(results=>results.json())
-        .then((results)=>{
-            console.log(results,'front end data')
-            resultsPanel.innerHTML=''
-            if (results) {
-                results.forEach((song)=>{
-                    new Track(song,false)
-                })
-            }
-        })
-        .then(()=>{
-            //user can delete seach phrase before fetch completes. This deletes the results if they deleted they query
-            if (searchBar.value===''){
+    if (query!='') {
+        setTimeout(async () => {
+            await fetch(`/search/${query}/0`)
+            .then(results=>results.json())
+            .then((results)=>{
+                console.log(results,'front end data')
                 resultsPanel.innerHTML=''
-            }   
-        })
-    }, 0); 
+                if (results) {
+                    results.forEach((song)=>{
+                        new Track(song,false)
+                    })
+                }
+            })
+            .then(()=>{
+                //user can delete seach phrase before fetch completes. This deletes the results if they deleted they query
+                if (searchBar.value===''){
+                    resultsPanel.innerHTML=''
+                }   
+            })
+        }, 0); 
+    } else {
+        resultsPanel.innerHTML=''
+    }
 })
 
 submitButton.addEventListener('click', (e)=>{
@@ -52,3 +56,4 @@ submitButton.addEventListener('click', (e)=>{
         alert('Playlists need atleast one song')
     }
 })
+

@@ -47,7 +47,7 @@ router.post('/register', async (req,res)=>{
 
 router.post('/logout', (req,res) => {
     req.logout(()=> {
-        res.redirect('/')
+        res.redirect('/playlists')
     })
 })
 
