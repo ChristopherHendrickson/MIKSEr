@@ -14,6 +14,8 @@ h1 {
 
 nav {
     background-color: black;
+    display:flex;
+    flex-direction: row;
 }
 
 .title {
@@ -179,7 +181,7 @@ nav {
     flex-direction: row;
     overflow-x: hidden;
     bottom:0px;
-    transition: 100s;
+    transition: 1s;
 }
 
 .iframeSec {

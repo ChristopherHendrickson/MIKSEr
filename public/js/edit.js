@@ -1,10 +1,25 @@
+import Track from "./Track.js";
 const searchBar = document.querySelector('.searchBar')
-const resultsPanel = document.querySelector('.resultsPanel')
-// const selectedPanel = document.querySelector('.selectedPanel')
-// const tracksPost = document.getElementById('tracksPost')
 const submitButton = document.getElementById('submitButton')
-import Track from './Track.js';
+const resultsPanel = document.querySelector('.resultsPanel')
+const databaseId = document.querySelector('.databaseIdDelivery').innerHTML
 
+let playlist
+
+const getPlaylist = async id => {
+    await fetch(`/database/${id}`)
+        .then(p=>p.json())
+        .then(p=>playlist=p)
+
+}
+
+
+getPlaylist(databaseId) //build screen
+    .then(()=>{
+        playlist.tracks.forEach((song)=>{
+            new Track(song,true)
+        })
+    })
 
 searchBar.addEventListener('keyup', (e)=>{
     console.log(searchBar.value)
@@ -19,7 +34,7 @@ searchBar.addEventListener('keyup', (e)=>{
             resultsPanel.innerHTML=''
             if (results) {
                 results.forEach((song)=>{
-                    new Track(song,false)        
+                    new Track(song,false)
                 })
             }
         })
@@ -29,7 +44,7 @@ searchBar.addEventListener('keyup', (e)=>{
                 resultsPanel.innerHTML=''
             }   
         })
-    }, 0); //timeout is added 
+    }, 0); 
 })
 
 submitButton.addEventListener('click', (e)=>{

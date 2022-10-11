@@ -5,7 +5,7 @@ Spofity API has rate limiting, doubt ill get anywhere near this but I am making 
 
 Should I send entire spotify API track response to database so I will have acces to evertything or create my own object. Will be useful to have access to everything if I scope change. Probably best to do this.
 How to save audio files. just save the link and create new audio objects or save actual 'new Audio' object in the db (dont think this is worth)? audio objects saved on front end, then these are cleared when cliet disconnects???
-
+How to get data to front end. Eg need playlist data in front end, have an api to get a paylist by id. How do i give frontend script the id.
 
 
 
@@ -16,9 +16,16 @@ Want to play reverse but 'HTMLMediaElement': The provided playback rate (-1) is 
 
 
 PLAYLIST MODEL FRAMEWORK
+name: playlist name
 creator ID: user object id
+creator: username of creator
 tracks[]: list of track objects from js api in playlist
 type: 'fast/slow/snippet/reverse
+likes:Num
+liked by:[]
+
+TRACKS OBJECT FRAMEWORK
+
 
 
 FRONT END

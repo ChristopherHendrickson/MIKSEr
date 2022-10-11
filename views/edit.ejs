@@ -1,0 +1,31 @@
+<%-include('partials/head.ejs')%>
+<h1></h1>   
+<p>Selected Songs</p>
+<div class="selectedPanel"></div>
+<input type="text" class="searchBar">
+<div class="resultsPanel"></div>
+<br>
+
+<form method="post" action="/playlists/<%=playlist._id%>?_method=PUT">
+    <label for="name">Playlist Name</label>
+    <input name="name" type="text" id="name" value="<%=playlist.name%>" required>
+    <br>
+    
+    <label for="snippet">Snippet</label>
+    <input type="radio" id="snippet" name="warp" value="Snippet" <%=playlist.warp==='Snippet' ? 'checked=checked': ''%>>
+
+    <label for="fast">Fast</label>
+    <input type="radio" id="fast" name="warp" value="Fast" <%=playlist.warp==='Fast' ? 'checked=checked': ''%>>
+    
+    <label for="slow">Slow</label>
+    <input type="radio" id="slow" name="warp" value="Slow" <%=playlist.warp==='Slow' ? 'checked=checked': ''%>>
+    
+    <br>
+    <input name="tracks" type="text" id="tracksPost" value="<%=selectedTracks%>" hidden required>
+    <input type="submit" value="Create Playlist" id="submitButton">
+</form>
+
+<div class="databaseIdDelivery"><%=playlist._id%></div>
+
+<script type="module" src='/js/edit.js'></script>
+<%-include('partials/foot.ejs')%>

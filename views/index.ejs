@@ -1,34 +1,56 @@
 <%-include('partials/head.ejs')%>
 <h1>Playlists</h1>
-
 <section class="randomSong">
     
 </section>
 
 <article class="playlistsAll">
-    <% for (p of playlists) { %>
-        <% if (p.length>0) { %>
-            <section class="playlist" id="<%=p._id%>">
+    <% if (Object.keys(playlists).length>0) { %>
 
-                <div class="playlistNameCreator">
-                    <a href="/playlists/<%=p._id%>">
-                    <span id="playlistName"><%=p.name%></span>
-                    </a>
-                    <span id="playlistCreator">By <%=p.creator%></span>
-                </div>
+        <% for (p of playlists) { %>
+            <% if (p.length>0) { %>
+                <section class="playlist" id="<%=p._id%>">
 
-                <div class="playlistLengthType">
-                    <span id="playlistLength"><%=p.length%> Songs</span>
-                    <span id="playlistType">Warp: <%=p.warp%></span>
-                </div>
+                    <div class="playlistNameCreator">
+                        <a href="/playlists/<%=p._id%>">
+                        <span id="playlistName"><%=p.name%></span>
+                        </a>
+                        <span id="playlistCreator">By <%=p.creator%></span>
+                    </div>
 
-                <div class="playlistEdit">
-                    <button>Like</button>
-                </div>
+                    <div class="playlistLengthType">
+                        <span id="playlistLength"><%=p.length%> Songs</span>
+                        <span id="playlistType">Warp: <%=p.warp%></span>
+                    </div>
 
-            </section>
+                    <div class="playlistEdit">
+                        <% if (!viewingOwn) { %>
+                            <button>Like</button>   
+                        <% } else { %>
+                            <a href="/playlists/edit/<%=p._id%>">Edit</a>
+                            <span class="deleteButton" id="<%=p._id%>">
+                                Delete
+                            </span>
+                            <span class="deleteConfirmPanel" id="<%=`deletepanel${p._id}`%>">
+                                <form action="/playlists/<%=p._id%>?_method=DELETE" method="post">
+                                    <input type="submit" value="Delete"/>
+                                </form>
+                                <span class="deleteCancel" id="<%=`deletecancel${p._id}`%>">
+                                    Cancel
+                                </span>
+                            </span>
+                            <% } %>
+                    </div>
+
+                </section>
+            <% } %>
         <% } %>
+    <% } else { %>
+        <span class="noPlaylists">
+            There are no Playlists here yet. Make a New One <a href="/playlists/new">Here!</a>
+        </span>
     <% } %>
+
 </article>
 
 

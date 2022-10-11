@@ -20,10 +20,11 @@
     <input type="radio" id="slow" name="warp" value="Slow">
     
     <br>
-    <input name="tracks" type="text" id="tracksPost" value="{}" hidden>
-    <input type="submit" value="Create Playlist">
+    <input name="tracks" type="text" id="tracksPost" value="" hidden required>
+    <input type="submit" value="Create Playlist" id="submitButton">
 </form>
 
-<!-- <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/003vvx7Niy0yvhvHt4a68B?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> -->
-<script src='/js/new.js'></script>
+
+<script type="module" src='/js/new.js'></script>
+
 <%-include('partials/foot.ejs')%>
