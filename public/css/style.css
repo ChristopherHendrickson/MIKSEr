@@ -342,10 +342,6 @@ nav .header img {
     display:none;
 }
 
-.nextButton.submittable {
-    background-color: black;
-    
-}
 
 .searchPanel {
     display:flex;
@@ -428,7 +424,7 @@ nav .header img {
     height:308px;
     overflow-y: auto;
     border: 2px solid gainsboro;
-    border-radius: 8px;
+    /* border-radius: 8px; */
     margin:10px auto;
 
 

@@ -218,6 +218,7 @@ const controller = ()=>{
     guessButton.addEventListener('click',(e)=>{
 
         if (guessButton.dataset.submittable==="true" && playlist) { //ensure playlist fetch has completed 
+            guessButton.dataset.submittable="false"
             const userGuess = searchBar.value
             const disp = guessDisplays[currentTrackIndex*5+guessCount]
             const track = playlist.tracks[currentTrackIndex]
@@ -263,7 +264,13 @@ const controller = ()=>{
         trackPanel.style.translate=`${-(currentTrackIndex+1)*100}vw`
         iframeSecs[currentTrackIndex].remove()
         summaryDisplays.forEach((e,i)=>{
-            e.querySelector('.score').innerHTML = `Guesses: ${scores[i]}`
+            let d
+            if (scores[i]==='Failed') {
+                d = scores[i]
+            } else {
+                d = `Guesses: ${scores[i]}`
+            }
+            e.querySelector('.score').innerHTML = d
         })
 
     })

@@ -80,27 +80,32 @@ router.get('/playlists/new', ensureLogin.ensureLoggedIn(), (req,res)=>{
 
 //CREATE
 router.post('/playlists', ensureLogin.ensureLoggedIn(), async (req,res)=>{
-    const user_id=req.user._id.valueOf()
-    const username=req.user.username
-    const tracks = JSON.parse(req.body.tracks)
-    const trackList = []
-    for (const [key, value] of Object.entries(tracks)) {
-        trackList.push(value)
-      }
-      
-    const newPlaylist = {
-        name:req.body.name,
-        creator:username,
-        creator_id:user_id,
-        tracks:trackList,
-        length:trackList.length,
-        warp:req.body.warp,
-        likedBy:[],
-        likes:0,
-    }
-    res.redirect('/playlists') //redirecting before await to speed up the redirect. Reduces the likelihood of duplicates being made by double clicking the submit, firing two posts.
+    try {
+        const user_id=req.user._id.valueOf()
+        const username=req.user.username
+        const tracks = JSON.parse(req.body.tracks)
+        const trackList = []
+        for (const [key, value] of Object.entries(tracks)) {
+            trackList.push(value)
+        }
+        
+        const newPlaylist = {
+            name:req.body.name,
+            creator:username,
+            creator_id:user_id,
+            tracks:trackList,
+            length:trackList.length,
+            warp:req.body.warp,
+            likedBy:[],
+            likes:0,
+        }
+        res.redirect('/playlists') //redirecting before await to speed up the redirect. Reduces the likelihood of duplicates being made by double clicking the submit, firing two posts.
+        //The playlist seems to be created fast enough to be displayed in the index page
 
-    await Playlist.create(newPlaylist)
+        await Playlist.create(newPlaylist)
+    } catch (error) {
+        next(error)
+    }
 
 })
 
