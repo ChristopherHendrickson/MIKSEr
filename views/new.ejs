@@ -1,29 +1,48 @@
 <%-include('partials/head.ejs')%>
-<h1></h1>
-<p>Selected Songs</p>
-<div class="selectedPanel"></div>
-<input type="text" class="searchBar" placeholder="Search for Songs or Artists">
-<div class="resultsPanel"></div>
-<br>
-<form method="post" action="/playlists">
-    <label for="name">Playlist Name</label>
-    <input name="name" type="text" id="name" required>
-    <br>
+<main class="edit-new-content">
 
-    <label for="snippet">Snippet</label>
-    <input type="radio" id="snippet" name="warp" value="Snippet" checked="checked">
 
-    <label for="fast">Fast</label>
-    <input type="radio" id="fast" name="warp" value="Fast">
-    
-    <label for="slow">Slow</label>
-    <input type="radio" id="slow" name="warp" value="Slow">
-    
-    <br>
-    <input name="tracks" type="text" id="tracksPost" value="" hidden required>
-    <input type="submit" value="Create Playlist" id="submitButton">
-</form>
 
+
+    <form method="post" action="/playlists">
+        <div class="name-input">
+            <label for="name">Playlist Name</label>
+            <input name="name" type="text" id="name" autocomplete="off" required>
+        </div>
+        <div class="radio">
+            <div>
+                <label for="snippet">Snippet</label>
+                <input type="radio" id="snippet" name="warp" value="Snippet" checked="checked">
+            </div>
+            <div>
+                <label for="fast">Fast</label>
+                <input type="radio" id="fast" name="warp" value="Fast">
+            </div>
+            <div>
+                <label for="slow">Slow</label>
+                <input type="radio" id="slow" name="warp" value="Slow">
+            </div>
+        </div>
+        
+        <p class="selectedSongsHead">Playlist</p>
+        <p id="remove-note">(Click Tracks to Remove)</p>
+        <div class="selectedPanel"></div>
+
+        <div id="sub-div">
+            <input name="tracks" type="text" id="tracksPost" value="" hidden required>
+            <input type="submit" value="Create Playlist" id="submitButton">
+        </div>
+
+
+    </form>
+    <div>
+        <input type="text" class="searchBar" placeholder="Search for Songs or Artists">
+        <div class="resultsPanel"></div>
+    </div>
+
+
+
+</main>
 
 <script type="module" src='/js/new.js'></script>
 

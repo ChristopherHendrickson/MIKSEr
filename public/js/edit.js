@@ -1,4 +1,5 @@
 import Track from "./Track.js";
+import cleanInput from "./cleanInput.js"
 const searchBar = document.querySelector('.searchBar')
 const submitButton = document.getElementById('submitButton')
 const resultsPanel = document.querySelector('.resultsPanel')
@@ -19,19 +20,22 @@ getPlaylist(databaseId) //build screen
         playlist.tracks.forEach((song)=>{
             new Track(song,true)
         })
-    })
+    }
+)
 
+let timeoutId
+
+    
 searchBar.addEventListener('keyup', (e)=>{
-    console.log(searchBar.value)
-    const query = searchBar.value
+    let userInput = searchBar.value
+    clearInterval(timeoutId)
+    const query = cleanInput(userInput)
 
-    console.log('search bar activating')
-    if (query!='') {
-        setTimeout(async () => {
+    if (query!='') { // ` will break the query by terminating fetch early
+        timeoutId = setTimeout(async () => {
             await fetch(`/search/${query}/0`)
             .then(results=>results.json())
             .then((results)=>{
-                console.log(results,'front end data')
                 resultsPanel.innerHTML=''
                 if (results) {
                     results.forEach((song)=>{
@@ -40,20 +44,33 @@ searchBar.addEventListener('keyup', (e)=>{
                 }
             })
             .then(()=>{
-                //user can delete seach phrase before fetch completes. This deletes the results if they deleted they query
-                if (searchBar.value===''){
+                if (searchBar.value==''){
                     resultsPanel.innerHTML=''
                 }   
             })
-        }, 0); 
+        }, 100); 
     } else {
         resultsPanel.innerHTML=''
     }
 })
+
+
+
 
 submitButton.addEventListener('click', (e)=>{
     if (Object.keys(Track.selectedTracks).length===0) {
         alert('Playlists need atleast one song')
     }
 })
+
+
+const hideSearch = (e) => {
+    console.log(e.target.parentElement)
+    if (!e.target.parentElement?.classList.contains('selectedPanel') && e.target!=searchBar) {
+        resultsPanel.innerHTML=''
+    }
+}
+
+window.addEventListener('click', hideSearch)
+
 

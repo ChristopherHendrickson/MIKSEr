@@ -49,10 +49,16 @@
                 </span>
             <% }) %>
         </div>
-
+        <div class="summaryButtons">
             <span class="exitButton">
                 Exit
             </span>
+            <% if(!playlist._id) { %>
+            <span class="playAgainButton">
+                Play Again
+            </span>
+            <% } %>
+        </div>
     </section>
 
 
@@ -78,14 +84,20 @@
 <article class="iframePanel">
     <%playlist.tracks.forEach((track)=>{ %>
         <section class="iframeSec dropped" id="<%=`iframe${track.id}`%>">
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/<%=track.id%>?utm_source=generator" width="90%" height="142" frameBorder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/<%=track.id%>?utm_source=generator" width="70%" height="142" frameBorder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </section>
     <% }) %>
 </article>
 
 
-<div class="databaseIdDelivery"><%=playlist._id%></div>
 
+<script>
+    const databaseId = '<%=playlist._id%>'
+    let randomPlaylist = JSON.stringify(null)
+    if (!databaseId) {
+        randomPlaylist = `<%- JSON.stringify(playlist) %>`
+    }
+</script>
 
-<script src="/js/show.js"></script>
+<script type="module" src="/js/show.js"></script>
 <%-include('partials/foot.ejs')%>

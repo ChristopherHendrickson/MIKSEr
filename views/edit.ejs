@@ -1,30 +1,43 @@
 <%-include('partials/head.ejs')%>
-<h1></h1>   
-<p>Selected Songs</p>
-<div class="selectedPanel"></div>
-<input type="text" class="searchBar" placeholder="Search for Songs or Artists">
-<div class="resultsPanel"></div>
-<br>
+<main class="edit-new-content">
 
-<form method="post" action="/playlists/<%=playlist._id%>?_method=PUT">
-    <label for="name">Playlist Name</label>
-    <input name="name" type="text" id="name" value="<%=playlist.name%>" required>
-    <br>
-    
-    <label for="snippet">Snippet</label>
-    <input type="radio" id="snippet" name="warp" value="Snippet" <%=playlist.warp==='Snippet' ? 'checked=checked': ''%>>
+    <form method="post" action="/playlists/<%=playlist._id%>?_method=PUT">
+        <div class="name-input">
+            <label for="name">Playlist Name</label>
+            <input name="name" type="text" id="name" value="<%=playlist.name%>" required>
+        </div>
+        <div class="radio">
+            <div>
+                <label for="snippet">Snippet</label>
+                <input type="radio" id="snippet" name="warp" value="Snippet" <%=playlist.warp==='Snippet' ? 'checked=checked': ''%>>
+            </div>
+            <div>
+                <label for="fast">Fast</label>
+                <input type="radio" id="fast" name="warp" value="Fast" <%=playlist.warp==='Fast' ? 'checked=checked': ''%>>
+            </div>
+            <div>
+                <label for="slow">Slow</label>
+                <input type="radio" id="slow" name="warp" value="Slow" <%=playlist.warp==='Slow' ? 'checked=checked': ''%>>
+            </div>
+        </div>
+                
 
-    <label for="fast">Fast</label>
-    <input type="radio" id="fast" name="warp" value="Fast" <%=playlist.warp==='Fast' ? 'checked=checked': ''%>>
-    
-    <label for="slow">Slow</label>
-    <input type="radio" id="slow" name="warp" value="Slow" <%=playlist.warp==='Slow' ? 'checked=checked': ''%>>
-    
-    <br>
-    <input name="tracks" type="text" id="tracksPost" value="<%=selectedTracks%>" hidden required>
-    <input type="submit" value="Update Playlist" id="submitButton">
-    
-</form>
+        <p class="selectedSongsHead">Playlist</p>
+        <p id="remove-note">(Click Tracks to Remove)</p>
+        <div class="selectedPanel"></div>
+
+        <div id="sub-div">
+            <input name="tracks" type="text" id="tracksPost" value="<%=selectedTracks%>" hidden required>
+            <input type="submit" value="Update Playlist" id="submitButton">
+        </div>
+
+    </form>
+    <div>
+        <input type="text" class="searchBar" placeholder="Search for Songs or Artists">
+        <div class="resultsPanel"></div>
+    </div>
+</main>
+
 
 <div class="databaseIdDelivery"><%=playlist._id%></div>
 

@@ -22,15 +22,11 @@ export default class Track {
 
             trackSection.addEventListener('click', ()=>{
                 const trackSection = document.getElementById(this.display)
-                console.log(trackSection)
-                console.log(this.selected)
                 if (!this.selected) {
                     this.selectTrack()
-                    console.log('selected track')
                 } else { //otherwsie click to remove it from the selected
                     trackSection.remove()
                     delete Track.selectedTracks[this.display]
-                    console.log('removed track')
 
                 }
 
@@ -50,7 +46,6 @@ export default class Track {
         const selectedPanel = document.querySelector('.selectedPanel')
         selectedPanel.appendChild(trackSection) //add track to the selected display
         Track.selectedTracks[this.display] = this.track //add track to the selected tracks object
-        console.log(this.track)
         this.selected=true
     }
 }

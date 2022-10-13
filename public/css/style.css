@@ -1,10 +1,16 @@
+a {
+    all:unset;
+}
+
 body {
+    min-height:100vh;
     margin:0;
     background-color: rgb(20, 20, 20);
     color:gainsboro;
     font-family: 'Roboto', sans-serif;
-    /* overflow-x: hidden; */
+    overflow-x: hidden;
     cursor: default;
+    /* overflow-y: hidden; */
 }
 
 h1 {
@@ -13,11 +19,17 @@ h1 {
 }
 
 nav {
-    border-bottom:2px solid gainsboro;
+    background-color: rgb(20, 20, 20);
+    position: sticky;
+    width:100vw;
+    top:0;
+    left:0;
+    border-bottom:4px solid gainsboro;
     display:flex;
     flex-direction: row;
     justify-content: flex-end;
-    min-height:68px;
+    min-height:76px;
+    z-index:1;
 }
 
 nav .header {
@@ -27,13 +39,184 @@ nav .header {
     text-align: center;
 }
 
+nav .header img {
+    max-height:50px;
+}
+
 .title {
     text-align: center;
-    font-size: 60px;
+    font-size: 50px;
     line-height: 2em;
 
 }
 
+.indexContent {
+    box-sizing: border-box;
+    min-height: 100vh;
+    padding-top:80px;
+    top:0px;
+    position: absolute;
+    display:flex;
+    flex-direction: row;
+    
+}
+
+.left {
+    position:sticky;
+    border-right: 1px solid gainsboro;
+    min-width:25vw;
+}
+
+.right {
+
+    border-left: 1px solid gainsboro;
+    min-width:25vw;
+}
+
+.playlistsAll {
+    box-sizing: border-box;
+    min-width: 50vw;
+}
+
+.playlist {
+    min-height:90px;
+    box-sizing:border-box;
+    background-color: rgb(24, 24, 24);
+    border: 1px solid rgb(168, 168, 168);
+    border-radius: 10px;
+    padding:10px;
+    display:flex;
+    flex-direction: row;
+    margin:20px 20px 25px 20px;
+}
+
+.indexRandomPlaylist {
+    background-color: rgb(20, 20, 20);
+    display:flex;
+    margin: 0;
+    border-radius: 0;
+    border: 0;
+    border-bottom: 1px solid rgb(168, 168, 168);
+    
+
+}
+
+.randomPlaylistSelect {
+    min-width:220px;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    margin:0 30px 0 auto;
+    text-align: center;
+}
+
+.randomPlaylistLinks {
+    width:100%;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+@media (max-width: 1000px) {
+    .randomPlaylistLinks {
+        flex-direction: column;
+        align-items: center;
+    }
+    .randomPlaylistSelect {
+        min-width:100px;
+    }    
+}
+
+.rbtn {
+    box-sizing: border-box;
+    height: 30px;
+    width: 70px;
+    background-color: black;
+    border: 1px solid rgb(168, 168, 168);
+    justify-content: center;
+    align-items: center;    
+}
+
+.rbtn:hover {
+    background-color: rgb(24,24,24);    
+}
+
+.playlistNameCreator {
+    display:flex;
+    flex-direction: column;
+    margin-right: auto;
+    max-width:75%;
+}
+
+.playlistLengthType {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content:end;
+    padding:0 10px;
+}
+
+.playlistEdit {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content:flex-end;
+    padding-left: 10px;
+
+}
+
+.rbtn > span {
+    width:100%;
+    display: inline-block;
+    line-height:30px;
+    text-align: center;
+}
+.edi-del-but {
+    width:56px;
+    height:24px;
+    margin-top:4px;
+    border-radius: 0;
+    color:rgb(158, 158, 158);
+    font-family: inherit;
+}
+
+.edi {
+    background-color: rgb(0, 61, 97,0.4);
+}
+
+.del {
+    background-color: rgba(66, 0, 0, 0.4);
+}
+
+.edi:hover {
+    background-color: rgb(0, 61, 97, 0.7);
+    color:gainsboro
+}
+
+.del:hover {
+    background-color: rgba(66, 0, 0, 0.9);
+    color:gainsboro
+}
+
+.likeimg {
+    max-width:40px;
+}
+
+
+.indexRandomPlaylist .header {
+
+    font-size:24px;
+    display: inline-flex;
+    align-items: center;
+    margin-left:24px;
+    text-align: center;
+}
+
+
+.resultsPanel section:hover{
+    background-color: #454545;
+} 
 
 
 .databaseIdDelivery {
@@ -46,9 +229,13 @@ nav .header {
     text-align: center;
 
 }
-#playlistName {
+.playlistName {
     font-size: 36px;
     line-height: 1.5em;
+}
+
+.playlistName:hover {
+    text-decoration: underline;
 }
 
 .trackPanel {
@@ -96,6 +283,11 @@ nav .header {
     background-color: rgb(26, 94, 26,0.4) 
 }
 
+.guessDisplay.partiallyCorrect {
+    background-color: rgba(105, 100, 22, 0.4) 
+}
+
+
 
 .playNext {
     display:flex;
@@ -125,7 +317,7 @@ nav .header {
     background-image: url('../image/play.png');
 }
 
-.nextButton,.guessButton,.skipButton,.summaryButton,.exitButton {
+.nextButton,.guessButton,.skipButton,.summaryButton,.exitButton,.playAgainButton {
     min-height: 30px;
     border: 2px solid gainsboro;
     min-width: 80px;
@@ -133,6 +325,17 @@ nav .header {
     text-align: center;
     line-height: 30px;
     cursor: pointer;
+    margin:0 5px;
+}
+
+.skipButton {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently*/
+
 }
 
 .hide {
@@ -151,16 +354,17 @@ nav .header {
     display:flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
-    margin: 0px auto;
-    width: 800px;
+    justify-content:center;
+    margin: 0px;
+    width: 100vw;
     margin-top:30px
+    
 }
 
 .searchBar {
     box-sizing: border-box;
     border-radius: 0;
-    border: 2px solid gainsboro;
+    border: 1px solid gainsboro;
     height:30px;
     line-height: 24px;
     font-size: 18px;
@@ -176,6 +380,7 @@ nav .header {
 }
 
 .resultsPanel {
+    justify-content:center;
     box-sizing: border-box;
     width: 600px;
     border: 1px solid gainsboro;
@@ -186,8 +391,11 @@ nav .header {
 .resultsPanel > section{    
     border:1px solid gainsboro;
     font-size: 18px;
+
     
 }
+
+
 
 .iframePanel {
     position:absolute;
@@ -220,7 +428,7 @@ nav .header {
     width:980px;
     display:flex;
     flex-direction: column;
-    height:304px;
+    height:308px;
     overflow-y: auto;
     border: 2px solid gainsboro;
     border-radius: 8px;
@@ -270,15 +478,15 @@ nav .header {
     background-position: center;
     background-size: 60%;
     background-repeat: no-repeat;
-  }
-  
-  
-  .dropdown {
+}
+
+
+.dropdown {
     position: relative;
     display: inline-block;
-  }
-  
-  .dropdown-content {
+}
+
+.dropdown-content {
     display: none;
     position: absolute;
     right:0;
@@ -286,16 +494,69 @@ nav .header {
     min-width: 160px;
     overflow: auto;
     z-index: 1;
-  }
-  
-  .dropdown-content a {
+}
+
+
+.delete-dropdown {
+    display: none;
+    position: absolute;
+    left:60px;
+    bottom:2px;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    overflow: auto;
+    z-index: 1;
+    border:1px solid black;
+    padding:5px;
+}
+
+.delete-dropdown span {
+    display:flex;
+    color: black;
+    justify-content: space-evenly;
+}
+
+.delete-dropdown span *:hover {
+    background-color: lightgray
+}
+
+.delete-dropdown p {
+    color: black;
+    margin:2px auto;
+    text-align: center;
+}
+.delete-dropdown * {
+    width:100%;
+}
+
+
+.delete-dropdown input[type="submit"] {
+    all: unset;
+    color: black;
+    display: block;
+    width:100%;
+    text-align: center;
+}
+
+
+
+.dropdown-content button {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-  }
+}
 
-  #logoutButton {
+
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+#logoutButton {
     font-family: 'Roboto', sans-serif;
     border:none;
     color: black;
@@ -305,9 +566,165 @@ nav .header {
     display: block;
     width:100%;
     text-align: left;
-  }
+}
 
-  .dropdown a:hover {background-color: #828282;}
-  #logoutButton:hover {background-color: #828282;}
+.dropdown a:hover, #logoutButton:hover  {
+    background-color: #828282;
+}
 
-  .show {display: block;}
+
+.show {display: block;}
+
+.summaryButtons {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.edit-new-content {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.radio {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-bottom: 16px;
+}
+
+.selectedPanel {
+    height:300px;
+    width:600px;
+    overflow-y:auto;
+    border:2px solid gainsboro;
+    padding:0;
+    margin-bottom: 30px;
+}
+
+.selectedPanel > section{    
+    padding: 0 5px;
+    border-bottom:1px solid gainsboro;
+
+    font-size: 24px;
+}
+
+.selectedSongsHead {
+    text-align: center;
+    margin:0;
+    font-size: 24px;
+}
+
+
+.name-input {
+    margin:16px auto;
+    text-align: center;
+    display:flex;
+    flex-direction: column;
+}
+
+.name-input > label {
+    font-size: 24px;
+    margin-bottom:8px;
+}
+
+.name-input input {
+    margin: 0 auto;
+    box-sizing: border-box;
+    border-radius: 0;
+    border: 1px solid gainsboro;
+    height:30px;
+    line-height: 24px;
+    font-size: 18px;
+    width: 400px;
+    background-color:rgb(20, 20, 20);
+    color:gainsboro;
+    user-select: none;
+}
+
+#sub-div {
+    text-align: center;
+}
+
+
+input[type='radio']:after {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #d1d3d1;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+input[type='radio']:checked:after {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: black;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+
+.edit-new-content input[type='submit'] {
+    font-family: 'Roboto', sans-serif;
+    margin: 10px;
+    color: black;
+    font-size: 16px;
+    padding: 12px 16px;
+    text-align: center;
+
+}
+
+
+::-webkit-scrollbar {
+    width: 15px;
+    background-color:grey;
+    border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    /* border-radius: 100px; */
+    background-color: black;
+    background-clip: content-box;
+}
+
+#remove-note {
+    margin:3px auto;
+    text-align: center;
+    font-size: 14px;
+}
+
+
+.login-register {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+}
+
+.login-register form {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto
+}
+
+.login-register form * {
+
+    margin-top: 10px;
+}
+
+
+.login-register input[type="submit"] {
+    width:70px;
+    align-self: center;
+    margin-top: 10px;
+}

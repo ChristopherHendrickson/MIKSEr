@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="shortcut icon" href="/#">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
@@ -9,13 +10,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
     <script defer src="/js/head.js"></script>
-    <title>TITLE</title>
+    <title><%= typeof tabTitle === 'undefined' ? 'MIKSEr' : tabTitle %></title>
     
 </head>
 <body>
     <nav>
         <div class="header">
             MIKSEr
+            <img src="/image/logo.png">
+
         </div>
         <div class="dropdown">
             <button class="accbtn"></button>

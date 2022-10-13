@@ -2,14 +2,18 @@ const searchBar = document.querySelector('.searchBar')
 const resultsPanel = document.querySelector('.resultsPanel')
 const submitButton = document.getElementById('submitButton')
 import Track from './Track.js';
-console.log(searchBar)
+import cleanInput from "./cleanInput.js"
+
+let timeoutId
+
+
 
 searchBar.addEventListener('keyup', (e)=>{
-    const query = searchBar.value
-    console.log(query)
-    if (query!='') {
-        console.log('passed the if')
-        setTimeout(async () => {
+    let userInput = searchBar.value
+    clearInterval(timeoutId)
+    const query = cleanInput(userInput)
+    if (query!='') { 
+        timeoutId = setTimeout(async () => {
             await fetch(`/search/${query}/0`)
             .then(results=>results.json())
             .then((results)=>{
@@ -21,17 +25,18 @@ searchBar.addEventListener('keyup', (e)=>{
                 }
             })
             .then(()=>{
-                //user can delete seach phrase before fetch completes. This deletes the results if they deleted they query
                 if (searchBar.value==''){
-                    console.log('clearing search results')
                     resultsPanel.innerHTML=''
                 }   
             })
-        }, 0); 
+        }, 100); 
     } else {
         resultsPanel.innerHTML=''
     }
 })
+
+
+
 
 submitButton.addEventListener('click', (e)=>{
     if (Object.keys(Track.selectedTracks).length===0) {
@@ -39,3 +44,11 @@ submitButton.addEventListener('click', (e)=>{
     }
 })
 
+const hideSearch = (e) => {
+    console.log(e.target.parentElement)
+    if (!e.target.parentElement?.classList.contains('selectedPanel') && e.target!=searchBar) {
+        resultsPanel.innerHTML=''
+    }
+}
+
+window.addEventListener('click', hideSearch)

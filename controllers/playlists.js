@@ -6,7 +6,39 @@ const ensureLogin = require('connect-ensure-login')
 const { search, getToken, getTrack } = require('../lib/spotifyAPIfuncs')
 const User = require('../models/users')
 
-const limit=10
+// const limit=10
+
+
+const searchSpotifyTracks = async (query,limit,offset) => {
+    const results = []
+    await getToken()
+    .then((token)=>{
+        const searchResult = search(token,query,limit,offset)
+        return searchResult
+    })
+    .then((data)=>{
+        if (data.tracks) {
+            data.tracks.items.forEach((track)=>{
+
+                if (track.preview_url) {
+                    const trackName = track.name
+                    const trackArtist = track.artists[0].name
+                    results.push({
+                        track:trackName,
+                        artist:trackArtist,
+                        id:track.id,
+                        preview:track.preview_url,
+                        popularity:track.popularity,
+                        image:track.album?.images?.[0]?.url,
+                        display:`${trackName} - ${trackArtist}`
+                    })
+                }
+            })
+        }
+        
+    })
+    return results
+}
 
 
 //INDEX
@@ -15,7 +47,7 @@ router.get('/playlists', async (req,res)=>{
 
     res.render('index.ejs', {
         playlists:playlists,
-        tabTitle:'update title',
+        tabTitle:'MIKSEr | Browse',
         currentUser:req.user,
         viewingOwn:false,
     })
@@ -26,7 +58,7 @@ router.get('/playlists/user/:username', ensureLogin.ensureLoggedIn(), async (req
         const usersPlaylists = await Playlist.find({creator:req.params.username})
         res.render('index.ejs', {
             playlists:usersPlaylists,
-            tabTitle:'update title',
+            tabTitle:`MIKSEr | ${req.params.username}`,
             currentUser:req.user,
             viewingOwn:true,
         })
@@ -39,7 +71,7 @@ router.get('/playlists/user/:username', ensureLogin.ensureLoggedIn(), async (req
 router.get('/playlists/new', ensureLogin.ensureLoggedIn(), (req,res)=>{
     res.render('new.ejs', {
         currentUser:req.user,
-        tabTitle:'title'
+        tabTitle:'MIKSEr | New'
     })
 })
 
@@ -80,7 +112,7 @@ router.get('/playlists/edit/:id', ensureLogin.ensureLoggedIn(), async (req,res)=
         playlist,
         selectedTracks:JSON.stringify(selectedTracks),
         currentUser:req.user,
-        tabTitle:'title'
+        tabTitle:'MIKSEr'
     })
 })
 
@@ -94,7 +126,7 @@ router.put('/playlists/:id', ensureLogin.ensureLoggedIn(), async (req,res)=>{
       }
       
     const newPlaylist = {
-        name:playlist.name,
+        name:req.body.name,
         creator:playlist.creator,
         creator_id:playlist.user_id,
         tracks:trackList,
@@ -118,31 +150,40 @@ router.delete('/playlists/:id', ensureLogin.ensureLoggedIn(), async (req,res)=>{
 //SHOW RANDOM
 
 router.get('/playlists/random/:warp', async (req,res)=>{
-    const chars = 'abcdefghijklmnopqrstuvwxyz'
-    const randomCharacter = chars[Math.floor(Math.random()*chars.length)]
-    const randomOffset = Math.floor(Math.random()*200)
     const warp = req.params.warp.charAt(0).toUpperCase() + req.params.warp.slice(1)
-    console.log(warp)
     
     const playlist = {
-        name:'Random Mix',
+        name:'Random: ' + warp,
         creator:'MIKSEr',
-        length:1,
         warp:warp,
         tracks:[],
         _id:null,
     }
 
-    while (playlist.tracks.length===0) {
-        await fetch(`/search/${randomCharacter}/${randomOffset}`)
-            .then(results=>results.json())
-            .then((results)=>{
-                if (results.length>0) {
-                    playlist.tracks.push(results[0])
-                }
-            })
-        }
+    let l = 50 //search limit
+    const maxOffset = 250
+    let randomOffset = Math.floor(Math.random()*maxOffset)
+    const minPopularity = 82
+    const maxPlaylistLength = 2
+    const chars = 'abcdefghijklmnopqrstuvwxyz'
+    const vowels = 'aeiou'
+    let randomCharacter = chars[Math.floor(Math.random()*chars.length)] + vowels[Math.floor(Math.random()*vowels.length)] + chars[Math.floor(Math.random()*chars.length)]
 
+    while (playlist.tracks.length<maxPlaylistLength) { 
+
+        let results = await searchSpotifyTracks(randomCharacter,l,randomOffset) //searching for 20 as songs without preview urls are not added back. Higher limit create less chance of recalling api 
+        // console.log('start for, checking songs: ',results.length,' from input: ',randomCharacter, 'at offset: ',randomOffset)
+        for (let result of results) {
+            if (!result.track.includes('`') && !result.artist.includes(`'`) && result.popularity>=minPopularity) {
+                playlist.tracks.push(result);
+                break //only add one song from each call so each song is not from the same search query string
+            }
+        }
+        randomOffset = Math.floor(Math.random()*maxOffset)
+        randomCharacter = chars[Math.floor(Math.random()*chars.length)] + vowels[Math.floor(Math.random()*vowels.length)] + chars[Math.floor(Math.random()*chars.length)]
+    }
+
+    playlist.length=playlist.tracks.length
     res.render('show.ejs', {
         playlist:playlist,
         tabTitle:`MIKSEr | ${playlist.name}`,
@@ -155,6 +196,7 @@ router.get('/playlists/random/:warp', async (req,res)=>{
 
 //SHOW 
 router.get('/playlists/:id', async (req,res)=>{
+    console.log('calling show route')
     const playlist = await Playlist.findOne({_id:req.params.id})
     res.render('show.ejs', {
         playlist:playlist,
@@ -169,9 +211,7 @@ router.get('/playlists/:id', async (req,res)=>{
 
 //BLANK SEARCH
 router.get('/search', (req,res)=>{
-    setTimeout(() => {
-        res.send([])
-    }, 10);
+    res.send([])
 })
 
 
@@ -181,36 +221,13 @@ router.get('/',(req,res)=>{
 
 //API SEARCH
 router.get('/search/:query/:offset', async (req,res)=>{
-    await getToken()
-        .then((token)=>{
-            const searchResult = search(token,req.params.query,limit,req.params.offset)
-            return searchResult
-        })
-        .then((data)=>{
-            const results = []
-            if (data.tracks) { //if the token is invalid, the spotify api will return an error object, this will not execute and an empty list will be retured
-                data.tracks.items.forEach((track)=>{
-                    if (track.preview_url) {
-                        const trackName = track.name
-                        const trackArtist = track.artists[0].name
-                        results.push({
-                            track:trackName,
-                            artist:trackArtist,
-                            id:track.id,
-                            preview:track.preview_url,
-                            popularity:track.popularity,
-                            image:track.album.images[0].url,
-                            display:`${trackName} - ${trackArtist}`
-                        })
-                    }
-                })
-            }
-            res.send(results) 
-        })
+    const results = await searchSpotifyTracks(req.params.query,9,req.params.offset)
+    res.send(results)
 })
 
 //Database search
 router.get('/database/:id', async (req,res)=>{
+    console.log('getting database')
     const playlist = await Playlist.findOne({_id:req.params.id})
     
     res.send(playlist)
