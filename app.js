@@ -49,8 +49,8 @@ passport.deserializeUser(User.deserializeUser())
 
 app.use(authRouter)
 app.use(playlistsRouter)
-// app.use(notFoundHandler)
-// app.use(errorHandler)
+app.use(notFoundHandler)
+app.use(errorHandler)
 
 
 

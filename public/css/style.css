@@ -234,9 +234,6 @@ nav .header img {
     line-height: 1.5em;
 }
 
-.playlistName:hover {
-    text-decoration: underline;
-}
 
 .trackPanel {
     /* overflow-x: hidden; */
@@ -570,6 +567,7 @@ nav .header img {
 
 .dropdown a:hover, #logoutButton:hover  {
     background-color: #828282;
+    text-decoration: underline;
 }
 
 
@@ -727,4 +725,17 @@ input[type='radio']:checked:after {
     width:70px;
     align-self: center;
     margin-top: 10px;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.small {
+    font-size:12px;
+    margin:2px 0;
+}
+
+a:hover {
+    text-decoration: underline;
 }

@@ -3,7 +3,7 @@ const notFoundHandler = (req,res) => {
 }
 
 const errorHandler = (error,req,res,next) => {
-    res.status(500).send('Internal Server Error 500')
+    res.status(500).render('500.ejs')
 }
 
 

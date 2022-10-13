@@ -6,7 +6,6 @@ const ensureLogin = require('connect-ensure-login')
 const { search, getToken, getTrack } = require('../lib/spotifyAPIfuncs')
 const User = require('../models/users')
 
-// const limit=10
 
 
 const searchSpotifyTracks = async (query,limit,offset) => {
@@ -54,16 +53,20 @@ router.get('/playlists', async (req,res)=>{
 })
 //PERSONAL INDEX
 router.get('/playlists/user/:username', ensureLogin.ensureLoggedIn(), async (req,res)=> {
-    if (req.user.username===req.params.username) {
-        const usersPlaylists = await Playlist.find({creator:req.params.username})
-        res.render('index.ejs', {
-            playlists:usersPlaylists,
-            tabTitle:`MIKSEr | ${req.params.username}`,
-            currentUser:req.user,
-            viewingOwn:true,
-        })
+    if (req.user) {
+        if (req.user.username===req.params.username) {
+            const usersPlaylists = await Playlist.find({creator:req.params.username})
+            res.render('index.ejs', {
+                playlists:usersPlaylists,
+                tabTitle:`MIKSEr | ${req.params.username}`,
+                currentUser:req.user,
+                viewingOwn:true,
+            })
+        } else {
+            res.redirect(`/playlists/user/${req.user.username}`)
+        }
     } else {
-        res.redirect(`/playlists/user/${req.user.username}`)
+        res.redirect(`/login`)
     }
 })
 
@@ -102,43 +105,52 @@ router.post('/playlists', ensureLogin.ensureLoggedIn(), async (req,res)=>{
 })
 
 //EDIT SHOW
-router.get('/playlists/edit/:id', ensureLogin.ensureLoggedIn(), async (req,res)=>{
-    const playlist = await Playlist.findById(req.params.id)
-    const selectedTracks = {}
-    playlist.tracks.forEach((track)=>{
-        selectedTracks[track.display]=track
-    })
-    res.render('edit.ejs', {
-        playlist,
-        selectedTracks:JSON.stringify(selectedTracks),
-        currentUser:req.user,
-        tabTitle:'MIKSEr'
-    })
+router.get('/playlists/edit/:id', ensureLogin.ensureLoggedIn(), async (req,res,next)=>{
+    try {
+        const playlist = await Playlist.findById(req.params.id)
+        const selectedTracks = {}
+        playlist.tracks.forEach((track)=>{
+            selectedTracks[track.display]=track
+        })
+        res.render('edit.ejs', {
+            playlist,
+            selectedTracks:JSON.stringify(selectedTracks),
+            currentUser:req.user,
+            tabTitle:'MIKSEr'
+        })
+    } catch (error) {
+        next(error)
+    }
 })
 
 //EDIT
-router.put('/playlists/:id', ensureLogin.ensureLoggedIn(), async (req,res)=>{
-    const playlist = await Playlist.findById(req.params.id)
-    const tracks = JSON.parse(req.body.tracks)
-    const trackList = []
-    for (const [key, value] of Object.entries(tracks)) {
-        trackList.push(value)
-      }
-      
-    const newPlaylist = {
-        name:req.body.name,
-        creator:playlist.creator,
-        creator_id:playlist.user_id,
-        tracks:trackList,
-        length:trackList.length,
-        warp:req.body.warp,
-        likedBy:playlist.likedBy,
-        likes:playlist.likes,
+router.put('/playlists/:id', ensureLogin.ensureLoggedIn(), async (req,res,next)=>{
+    try {
+        const playlist = await Playlist.findById(req.params.id)
+        const tracks = JSON.parse(req.body.tracks)
+        const trackList = []
+        for (const [key, value] of Object.entries(tracks)) {
+            trackList.push(value)
+        }
+        
+        const newPlaylist = {
+            name:req.body.name,
+            creator:playlist.creator,
+            creator_id:playlist.user_id,
+            tracks:trackList,
+            length:trackList.length,
+            warp:req.body.warp,
+            likedBy:playlist.likedBy,
+            likes:playlist.likes,
+        }
+        await Playlist.findByIdAndUpdate(req.params.id,newPlaylist,{new:true})
+        res.redirect(`/playlists/user/${playlist.creator}`)
+    } catch (error) {
+        next(error)
     }
-    await Playlist.findByIdAndUpdate(req.params.id,newPlaylist,{new:true})
-    res.redirect(`/playlists/user/${playlist.creator}`)
 })
 
+//DELETE
 router.delete('/playlists/:id', ensureLogin.ensureLoggedIn(), async (req,res)=>{
     console.log('delete route')
     const deleteObject = await Playlist.findByIdAndRemove(req.params.id)
@@ -161,9 +173,9 @@ router.get('/playlists/random/:warp', async (req,res)=>{
     }
 
     let l = 50 //search limit
-    const maxOffset = 250
+    const maxOffset = 220
     let randomOffset = Math.floor(Math.random()*maxOffset)
-    const minPopularity = 82
+    const minPopularity = 77
     const maxPlaylistLength = 2
     const chars = 'abcdefghijklmnopqrstuvwxyz'
     const vowels = 'aeiou'
@@ -195,15 +207,18 @@ router.get('/playlists/random/:warp', async (req,res)=>{
 
 
 //SHOW 
-router.get('/playlists/:id', async (req,res)=>{
-    console.log('calling show route')
-    const playlist = await Playlist.findOne({_id:req.params.id})
-    res.render('show.ejs', {
-        playlist:playlist,
-        tabTitle:`MIKSEr | ${playlist.name}`,
-        currentUser:req.user
-        
-    })
+router.get('/playlists/:id', async (req,res,next)=>{
+    try {
+        const playlist = await Playlist.findOne({_id:req.params.id})
+        res.render('show.ejs', {
+            playlist:playlist,
+            tabTitle:`MIKSEr | ${playlist.name}`,
+            currentUser:req.user
+            
+        })
+    } catch (error) {
+        next(error)
+    }
 })
 
 
@@ -216,21 +231,28 @@ router.get('/search', (req,res)=>{
 
 
 router.get('/',(req,res)=>{
-    res.render('home.ejs')
+    res.redirect('/playlists')
 })
 
 //API SEARCH
-router.get('/search/:query/:offset', async (req,res)=>{
-    const results = await searchSpotifyTracks(req.params.query,9,req.params.offset)
-    res.send(results)
+router.get('/search/:query/:offset', async (req,res,next)=>{
+    try {
+        const results = await searchSpotifyTracks(req.params.query,9,req.params.offset)
+        res.send(results)
+    } catch(error) {
+        next(error)
+    }
 })
 
 //Database search
-router.get('/database/:id', async (req,res)=>{
-    console.log('getting database')
-    const playlist = await Playlist.findOne({_id:req.params.id})
-    
-    res.send(playlist)
+router.get('/database/:id', async (req,res,next)=>{
+    try {
+        const playlist = await Playlist.findOne({_id:req.params.id})
+        
+        res.send(playlist)
+    } catch(error) {
+        next(error)
+    }
 })
 
 
