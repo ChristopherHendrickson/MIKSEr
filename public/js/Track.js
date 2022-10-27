@@ -4,7 +4,7 @@ export default class Track {
         this.track=track
         this.display = `${track.track} - ${track.artist}`
         this.selected=selected
-        this.addToDOM()       
+        this.addToDOM()
     }
     addToDOM() {
         const tracksPost = document.getElementById('tracksPost')

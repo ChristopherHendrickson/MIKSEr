@@ -180,18 +180,17 @@ router.get('/playlists/random/:warp', async (req,res)=>{
     let l = 50 //search limit
     const maxOffset = 220
     let randomOffset = Math.floor(Math.random()*maxOffset)
-    const minPopularity = 77
-    const maxPlaylistLength = 2
+    const minPopularity = 70
+    const maxPlaylistLength = 3
     const chars = 'abcdefghijklmnopqrstuvwxyz'
     const vowels = 'aeiou'
     let randomCharacter = chars[Math.floor(Math.random()*chars.length)] + vowels[Math.floor(Math.random()*vowels.length)] + chars[Math.floor(Math.random()*chars.length)]
 
     while (playlist.tracks.length<maxPlaylistLength) { 
 
-        let results = await searchSpotifyTracks(randomCharacter,l,randomOffset) //searching for 20 as songs without preview urls are not added back. Higher limit create less chance of recalling api 
-        // console.log('start for, checking songs: ',results.length,' from input: ',randomCharacter, 'at offset: ',randomOffset)
+        let results = await searchSpotifyTracks(randomCharacter,l,randomOffset)
         for (let result of results) {
-            if (!result.track.includes('`') && !result.artist.includes(`'`) && result.popularity>=minPopularity) {
+            if (!result.track.includes(`"`) && !result.artist.includes(`"`) && result.popularity>=minPopularity) {
                 playlist.tracks.push(result);
                 break //only add one song from each call so each song is not from the same search query string
             }

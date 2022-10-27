@@ -1,6 +1,6 @@
 import cleanInput from "./cleanInput.js"
 const controller = ()=>{
-    
+    console.log('controller active')
     const searchBar = document.querySelector('.searchBar')
     const resultsPanel = document.querySelector('.resultsPanel')
     const guessDisplays = document.querySelectorAll('.guessDisplay')
@@ -219,6 +219,7 @@ const controller = ()=>{
 
         if (guessButton.dataset.submittable==="true" && playlist) { //ensure playlist fetch has completed 
             guessButton.dataset.submittable="false"
+            guessButton.classList.toggle('submittable',false)
             const userGuess = searchBar.value
             const disp = guessDisplays[currentTrackIndex*5+guessCount]
             const track = playlist.tracks[currentTrackIndex]
