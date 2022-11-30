@@ -1,6 +1,5 @@
 import cleanInput from "./cleanInput.js"
 const controller = ()=>{
-    console.log('controller active')
     const searchBar = document.querySelector('.searchBar')
     const resultsPanel = document.querySelector('.resultsPanel')
     const guessDisplays = document.querySelectorAll('.guessDisplay')
@@ -99,12 +98,10 @@ const controller = ()=>{
     
     
     const getPlaylist = async () => {
-        console.log('database ID: ', databaseId)
         if (databaseId) {
             await fetch(`/database/${databaseId}`)
                 .then(p=>p.json())
                 .then(p=>playlist=p)
-                .then(()=>console.log('got playlist'))
         } else {
             playlist = JSON.parse(randomPlaylist)
 

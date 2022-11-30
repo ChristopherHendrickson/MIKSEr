@@ -16,6 +16,7 @@ const searchSpotifyTracks = async (query,limit,offset) => {
         return searchResult
     })
     .then((data)=>{
+        console.log(data.tracks.items)
         if (data.tracks) {
             data.tracks.items.forEach((track)=>{
 
@@ -180,7 +181,7 @@ router.get('/playlists/random/:warp', async (req,res)=>{
     let l = 50 //search limit
     const maxOffset = 220
     let randomOffset = Math.floor(Math.random()*maxOffset)
-    const minPopularity = 70
+    const minPopularity = 78
     const maxPlaylistLength = 3
     const chars = 'abcdefghijklmnopqrstuvwxyz'
     const vowels = 'aeiou'
