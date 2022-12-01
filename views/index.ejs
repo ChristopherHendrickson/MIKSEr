@@ -58,9 +58,8 @@
                         </div>
 
                         <div class="playlistEdit">
-                            <% if (!viewingOwn) { %>
-                                <img class="likeimg" src="/image/like.png" id="like-<%=p._id%>">
-                            <% } else { %>
+                            <% if (viewingOwn) { %>
+                                
                                 <a href="/playlists/edit/<%=p._id%>">
                                     <button class="edi-del-but edi" id="edit-<%=p._id%>">Edit</button>
                                 </a>
