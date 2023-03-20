@@ -1,4 +1,4 @@
 # MIKSEr
 
 
-[https://music-mikser.herokuapp.com/playlists](https://music-mikser.herokuapp.com/playlists)
+[https://mikser.onrender.com/playlists](https://mikser.onrender.com/playlists/)
