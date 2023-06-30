@@ -28,7 +28,6 @@ The application is capable of generating playlists contaning three random songs.
 
 ## **Technologies Used**
 
-The app is entirely built using front-end web development languages, specifically:
 
 <ul>
     <li>Express.JS</li>
