@@ -16,7 +16,6 @@ const searchSpotifyTracks = async (query,limit,offset) => {
         return searchResult
     })
     .then((data)=>{
-        console.log(data.tracks.items)
         if (data.tracks) {
             data.tracks.items.forEach((track)=>{
 
