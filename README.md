@@ -5,7 +5,7 @@
 
 ## <br> **Application Features**
 
-MIKSEr is a music guessing game application. Songs are warped in a variety of ways and it's yuor job to correctly figure out what song it is. 
+MIKSEr is a music guessing game application. Songs are warped in a variety of ways and it's your job to correctly figure out what song it is. 
 
 <br>
 Songs are warped by either being sped up, slowed down, or cut into a very short snippet. The more incorrect guesses you make, the more normal the song will sound until you run out of guesses or get it right.
