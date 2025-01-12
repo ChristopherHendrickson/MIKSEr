@@ -1,5 +1,6 @@
 # MIKSEr
 
+A Recent change to Spotify API previews has broken this application
 
 [https://mikser.onrender.com/playlists](https://mikser.onrender.com/playlists/)
 
